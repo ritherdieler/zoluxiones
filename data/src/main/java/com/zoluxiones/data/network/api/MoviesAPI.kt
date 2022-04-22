@@ -1,5 +1,7 @@
 package com.zoluxiones.data.network.api
 
+import com.zoluxiones.data.network.response.MoviesResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,7 +15,11 @@ import retrofit2.http.Query
 
 
 interface MoviesAPI {
+
     @GET("3/movie/upcoming")
-    fun getMoviesByPage(@Query("page") page: Int, @Query("api_key") key: String)
+    suspend fun getMoviesByPage(
+        @Query("page") page: Int,
+        @Query("api_key") key: String
+    ): Response<MoviesResponse>
 
 }
