@@ -1,0 +1,19 @@
+
+b
+2presentation/src/main/res/layout/activity_main.xml,9\6\960365becf727e7ab3987e968a2f3b839cdf67e9
+i
+9presentation/src/main/java/com/zoluxiones/MainActivity.kt,c\d\cd6c0999d00facb39479dce2c28128632309f5c5
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+?
+settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+A
+gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
+O
+presentation/proguard-rules.pro,2\4\24cf0548cc2ed2ecfd00f3bb4290725bd3fb03a6
+G
+data/proguard-rules.pro,0\f\0fbb6d729d2f1271751b1eee2d01927256945f01
+G
+data/consumer-rules.pro,8\d\8d6a93142d516457e992dc51471f06dffd872e84
+C
+domain/build.gradle,a\3\a3021bb5ba623a461b5fdb89ae51923a4945c354

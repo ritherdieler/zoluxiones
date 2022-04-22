@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.7">
+      <module name="PruebaTecnica.data" target="11" />
+      <module name="PruebaTecnica.mylibrary" target="11" />
+      <module name="PruebaTecnica.presentation" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
