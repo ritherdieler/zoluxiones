@@ -3,10 +3,11 @@ package com.zoluxiones.data.repository
 import com.zoluxiones.data.mapper.MoviesMapper
 import com.zoluxiones.data.network.datasources.LocalDataSource
 import com.zoluxiones.data.network.datasources.RemoteDataSource
-import com.zoluxiones.data.network.response.MoviesResponse
+import com.zoluxiones.data.util.ConnectionUtils
 import com.zoluxiones.domain.entity.Movie
 import com.zoluxiones.domain.model.Either
 import com.zoluxiones.domain.model.Failure
+import com.zoluxiones.domain.model.DataOriginWrapper
 import com.zoluxiones.domain.repository.Repository
 
 /**
@@ -20,22 +21,32 @@ class RepositoryImpl(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val mapper: MoviesMapper,
+    private val connectionUtils: ConnectionUtils
 ) : Repository {
 
-    override suspend fun getMoviesByPage(pageNumber: Int): Either<Failure, List<Movie>> {
-        return when (val response = remoteDataSource.getMoviesByPage(pageNumber)) {
-            is Either.Success -> saveAndReturnFromLocal(response.data)
-            is Either.Error -> Either.Error(response.error)
-        }
-    }
-
-    private suspend fun saveAndReturnFromLocal(data: MoviesResponse): Either<Failure, List<Movie>> {
-        return try {
-            localDataSource.saveMovies(mapper.ToDatabaseList(data))
-            val dbMoviews = localDataSource.getMovies()
-            Either.Success(mapper.ToDomainList(dbMoviews))
-        } catch (e: Exception) {
-            Either.Error(Failure.LOCAL_DB_ERROR)
+    override suspend fun getMoviesByPage(pageNumber: Int): Either<Failure, DataOriginWrapper<List<Movie>>> {
+        return if (connectionUtils.isNetworkAvailable()) {
+            when (val response = remoteDataSource.getMoviesByPage(pageNumber)) {
+                is Either.Success -> {
+                    localDataSource.saveMovies(mapper.ToDatabaseList(response.data))
+                    Either.Success(
+                        DataOriginWrapper(
+                            totaPages = response.data.total_pages,
+                            comesFromRemote = true,
+                            data = mapper.ToDomainList(response.data)
+                        )
+                    )
+                }
+                is Either.Error -> Either.Error(response.error)
+            }
+        } else {
+            Either.Success(
+                DataOriginWrapper(
+                    comesFromRemote = false,
+                    data = mapper.ToDomainList(localDataSource.getMovies()),
+                    totaPages = 1
+                )
+            )
         }
     }
 

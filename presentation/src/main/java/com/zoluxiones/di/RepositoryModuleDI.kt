@@ -1,5 +1,6 @@
-package com.zoluxiones.data.di
+package com.zoluxiones.di
 
+import android.content.Context
 import com.zoluxiones.data.database.dao.MovieDao
 import com.zoluxiones.data.mapper.MoviesMapper
 import com.zoluxiones.data.network.api.MoviesAPI
@@ -8,11 +9,14 @@ import com.zoluxiones.data.network.datasources.LocalDataSourceImpl
 import com.zoluxiones.data.network.datasources.RemoteDataSource
 import com.zoluxiones.data.network.datasources.RemoteDataSourceImpl
 import com.zoluxiones.data.repository.RepositoryImpl
+import com.zoluxiones.data.util.ConnectionUtils
+import com.zoluxiones.data.util.ConnectionUtilsImpl
 import com.zoluxiones.data.util.NetworkUtils
 import com.zoluxiones.domain.repository.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -32,6 +36,12 @@ class RepositoryModuleDI {
     @Provides
     fun providesNetworkUtils() = NetworkUtils()
 
+
+    @Singleton
+    @Provides
+    fun providesConnectionUtils(@ApplicationContext context: Context): ConnectionUtils =
+        ConnectionUtilsImpl(context)
+
     @Singleton
     @Provides
     fun providesMoviesMapper() = MoviesMapper()
@@ -40,18 +50,25 @@ class RepositoryModuleDI {
     @Provides
     fun providesMoviesAPI(retrofit: Retrofit) = retrofit.create(MoviesAPI::class.java)
 
+    @Singleton
     @Provides
-    fun providesLocalDataSource(movieDao: MovieDao) = LocalDataSourceImpl(movieDao)
+    fun providesLocalDataSource(movieDao: MovieDao): LocalDataSource = LocalDataSourceImpl(movieDao)
 
+    @Singleton
     @Provides
-    fun providesRemoteDataSource(networkUtils: NetworkUtils, moviesAPI: MoviesAPI,) =
+    fun providesRemoteDataSource(
+        networkUtils: NetworkUtils,
+        moviesAPI: MoviesAPI
+    ): RemoteDataSource =
         RemoteDataSourceImpl(networkUtils, moviesAPI)
 
+    @Singleton
     @Provides
     fun provideRepository(
         localDataSource: LocalDataSource,
         remoteDataSource: RemoteDataSource,
-        moviesMapper: MoviesMapper
-    ): Repository = RepositoryImpl(localDataSource, remoteDataSource,moviesMapper)
+        moviesMapper: MoviesMapper,
+        connectionUtils: ConnectionUtils
+    ): Repository = RepositoryImpl(localDataSource, remoteDataSource, moviesMapper, connectionUtils)
 
 }

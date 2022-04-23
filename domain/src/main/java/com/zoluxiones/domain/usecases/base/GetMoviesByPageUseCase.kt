@@ -1,6 +1,7 @@
 package com.zoluxiones.domain.usecases.base
 
 import com.zoluxiones.domain.entity.Movie
+import com.zoluxiones.domain.model.DataOriginWrapper
 import com.zoluxiones.domain.model.Either
 import com.zoluxiones.domain.model.Failure
 import com.zoluxiones.domain.repository.Repository
@@ -14,9 +15,9 @@ import com.zoluxiones.domain.usecases.base.GetMoviesByPageUseCase.Params
  *
  **/
 class GetMoviesByPageUseCase(private val repository: Repository) :
-    BaseUseCase<List<Movie>, Params>() {
+    BaseUseCase<DataOriginWrapper<List<Movie>>, Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, List<Movie>> {
+    override suspend fun run(params: Params): Either<Failure, DataOriginWrapper<List<Movie>>> {
         return repository.getMoviesByPage(params.pageNumber)
     }
 

@@ -1,4 +1,4 @@
-package com.zoluxiones.data.di
+package com.zoluxiones.di
 
 import android.content.Context
 import com.zoluxiones.data.database.config.MyRoomDatabase

@@ -16,12 +16,24 @@ class MoviesMapper {
             )
         }
 
+    fun ToDomainList(moviesResponse: MoviesResponse): List<Movie> =
+        moviesResponse.results.map { movie ->
+            Movie(
+                id = movie.id,
+                poster_path = movie.poster_path ?: "",
+                title = movie.title,
+                vote_average = movie.vote_average,
+                release_date = movie.release_date,
+                overview = movie.overview
+            )
+        }
+
 
     fun ToDatabaseList(moviesResponse: MoviesResponse): List<com.zoluxiones.data.database.model.Movie> =
         moviesResponse.results.map { movie ->
             com.zoluxiones.data.database.model.Movie(
                 id = movie.id,
-                poster_path = movie.poster_path,
+                poster_path = movie.poster_path ?: "",
                 title = movie.title,
                 vote_average = movie.vote_average,
                 release_date = movie.release_date,

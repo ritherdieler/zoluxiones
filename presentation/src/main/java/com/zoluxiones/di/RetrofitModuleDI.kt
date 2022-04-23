@@ -1,4 +1,4 @@
-package com.zoluxiones.data.di
+package com.zoluxiones.di
 
 import com.google.gson.GsonBuilder
 import com.zoluxiones.data.BuildConfig

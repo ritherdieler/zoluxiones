@@ -3,6 +3,7 @@ package com.zoluxiones.domain.repository
 import com.zoluxiones.domain.entity.Movie
 import com.zoluxiones.domain.model.Either
 import com.zoluxiones.domain.model.Failure
+import com.zoluxiones.domain.model.DataOriginWrapper
 
 /**
  * Created by Sergio Carrillo Diestra on 22/04/2022.
@@ -12,5 +13,5 @@ import com.zoluxiones.domain.model.Failure
  *
  **/
 interface Repository {
-    suspend fun getMoviesByPage(pageNumber: Int): Either<Failure, List<Movie>>
+    suspend fun getMoviesByPage(pageNumber: Int): Either<Failure, DataOriginWrapper<List<Movie>>>
 }
