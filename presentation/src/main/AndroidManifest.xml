@@ -3,22 +3,26 @@
     package="com.zoluxiones">
 
     <application
+        android:name=".di.HiltApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".di.HiltApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PruebaTecnica">
+
         <activity
-            android:name=".features.MainActivity"
-            android:exported="true">
+            android:name=".features.movieList.MainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.PruebaTecnica">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

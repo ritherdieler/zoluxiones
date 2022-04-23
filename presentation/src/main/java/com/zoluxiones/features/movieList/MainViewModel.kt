@@ -1,4 +1,4 @@
-package com.zoluxiones.features
+package com.zoluxiones.features.movieList
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

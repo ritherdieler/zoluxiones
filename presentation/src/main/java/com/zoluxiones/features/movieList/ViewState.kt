@@ -1,4 +1,4 @@
-package com.zoluxiones.features
+package com.zoluxiones.features.movieList
 
 import com.zoluxiones.domain.entity.Movie
 

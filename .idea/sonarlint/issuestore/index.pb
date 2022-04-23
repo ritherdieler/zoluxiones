@@ -43,8 +43,6 @@ g
 7presentation/src/main/java/com/zoluxiones/theme/Type.kt,0\f\0fd74140f3cab50cce00ad0a3abe1a4bcc1b318f
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-Y
-)presentation/src/main/AndroidManifest.xml,f\f\ff448c8b12f3de1e58a75bb9abe0b8d4396181d5
 ‚
 Rdata/src/main/java/com/zoluxiones/data/network/datasources/RemoteDataSourceImpl.kt,e\9\e97968ecd8113ee3f73880843edf0baa5fd76a99
 r
@@ -53,8 +51,6 @@ C
 domain/build.gradle,a\3\a3021bb5ba623a461b5fdb89ae51923a4945c354
 A
 data/build.gradle,7\2\72c2781d3d9ac8b82a3543f0fba5c796b2975232
-Q
-!data/src/main/AndroidManifest.xml,f\a\fa20ad08e770fe0392ec3df5be8c6bde6c35d607
 }
 Mdata/src/main/java/com/zoluxiones/data/network/datasources/LocalDataSource.kt,d\1\d1da714bd91f939cee41282dac00b6df276fd569
 n

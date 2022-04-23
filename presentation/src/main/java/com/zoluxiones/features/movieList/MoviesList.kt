@@ -1,11 +1,13 @@
-package com.zoluxiones.features
+package com.zoluxiones.features.movieList
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -14,8 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.zoluxiones.domain.entity.Movie
+import com.zoluxiones.features.destinations.MovieDetailDestination
 
 /**
  * Created by Sergio Carrillo Diestra on 22/04/2022.
@@ -25,18 +30,32 @@ import com.zoluxiones.domain.entity.Movie
  *
  **/
 
+
+@Destination(start = true)
 @Composable
-fun MovieListUI(movies: List<Movie>, viewModel: MainViewModel = viewModel()) {
+fun MovieListUI(navigator: DestinationsNavigator, viewModel: MainViewModel = hiltViewModel()) {
 
     val viewState = viewModel.viewState
 
-    Column {
+    viewModel.getFirstMoviesPage()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Lista de peliculas") })
+        })
+    {
         ContentComposable(
             viewState.value,
             onLoadMore = { paginateMovies(viewModel) },
-            onItemClicked = {})
+            onItemClicked = {
+                navigateToMovieDetail(navigator, it)
+            })
     }
 
+}
+
+fun navigateToMovieDetail(navigator: DestinationsNavigator, movie: Movie) {
+    navigator.navigate(MovieDetailDestination(movie))
 }
 
 fun paginateMovies(viewModel: MainViewModel) {
@@ -47,7 +66,7 @@ fun paginateMovies(viewModel: MainViewModel) {
 fun ContentComposable(
     state: ViewState?,
     onLoadMore: () -> Unit,
-    onItemClicked: () -> Unit,
+    onItemClicked: (movie: Movie) -> Unit,
 ) {
     when (state) {
         is ViewState.EmptyScreen -> {
@@ -66,7 +85,7 @@ fun ContentComposable(
 private fun LoadedComposable(
     state: ViewState.Loaded,
     onLoadMore: () -> Unit,
-    onItemClicked: () -> Unit
+    onItemClicked: (movie: Movie) -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -80,8 +99,13 @@ private fun LoadedComposable(
         onLoadMore()
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyColumn(state = listState,
-            modifier = Modifier.weight(1f).padding(top = 16.dp)) {
+        LazyColumn(
+
+            state = listState,
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 16.dp),
+        ) {
             items(state.data.size) {
                 ItemComposable(state.data[it], onItemClicked)
             }
@@ -94,12 +118,14 @@ private fun LoadedComposable(
 }
 
 @Composable
-fun ItemComposable(movie: Movie, onItemClicked: () -> Unit) {
+fun ItemComposable(movie: Movie, onItemClicked: (movie: Movie) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 8.dp)
+            .clickable { onItemClicked.invoke(movie) }
+
     ) {
         Text(text = movie.title, fontSize = 20.sp)
         Divider(modifier = Modifier.padding(vertical = 15.dp))
