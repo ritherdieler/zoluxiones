@@ -12,7 +12,7 @@
         android:theme="@style/Theme.PruebaTecnica">
 
         <activity
-            android:name=".features.movieList.MainActivity"
+            android:name=".features.main.MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.PruebaTecnica">

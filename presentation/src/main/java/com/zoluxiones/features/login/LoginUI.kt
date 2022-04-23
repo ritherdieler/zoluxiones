@@ -5,7 +5,8 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,14 +16,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.zoluxiones.features.destinations.MovieListUIDestination
 import com.zoluxiones.theme.MyTheme
 
-@Destination()
+@Destination(start = true)
 @Composable
-fun LoginUI(navigator:DestinationsNavigator) {
+fun LoginUI(navigator: DestinationsNavigator) {
     Scaffold(
         topBar = { TopAppBar(title = { Text("Iniciar Sesion") }) }
 
@@ -76,16 +77,14 @@ fun LoginUI(navigator:DestinationsNavigator) {
 }
 
 fun navigateToMoviesList(
-    navController: DestinationsNavigator,
+    navigator: DestinationsNavigator,
     username: String,
     password: String,
     mContext: Context,
 ) {
 
     if (username == "Admin" && password == "Password*123")
-//        navController.navigate(
-//
-//        )
+        navigator.navigate(MovieListUIDestination)
     else
         Toast.makeText(mContext, "Usuario o contraseña no validos", Toast.LENGTH_SHORT).show()
 }

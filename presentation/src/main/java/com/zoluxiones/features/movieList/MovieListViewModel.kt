@@ -21,7 +21,7 @@ import javax.inject.Inject
  *
  **/
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class MovieListViewModel @Inject constructor(
     private val getMoviesByPageUseCase: GetMoviesByPageUseCase
 ) : ViewModel() {
 
@@ -29,7 +29,6 @@ class MainViewModel @Inject constructor(
     private var currentMovies: MutableList<Movie> = mutableListOf()
     var currentPage: Int = 1
     var lastPage: Int? = null
-    val moviesListState: MutableState<List<Movie>> = mutableStateOf(emptyList())
 
     val viewState: MutableState<ViewState> = mutableStateOf(ViewState.EmptyScreen)
 
