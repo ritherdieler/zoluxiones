@@ -13,13 +13,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * Created by Sergio Carrillo Diestra on 22/04/2022.
- * scarrillo.peruapps@gmail.com
- * Peru Apps
- * Huacho, Peru.
- *
- **/
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
     private val getMoviesByPageUseCase: GetMoviesByPageUseCase
@@ -27,12 +20,12 @@ class MovieListViewModel @Inject constructor(
 
     private var remoteDataSourceIsAvailable: Boolean = false
     private var currentMovies: MutableList<Movie> = mutableListOf()
-    var currentPage: Int = 1
-    var lastPage: Int? = null
+    private var currentPage: Int = 1
+    private var lastPage: Int? = null
 
     val viewState: MutableState<ViewState> = mutableStateOf(ViewState.EmptyScreen)
 
-    val errorState: MutableLiveData<String> = MutableLiveData()
+    private val errorState: MutableLiveData<String> = MutableLiveData()
 
 
     fun getFirstMoviesPage() {
@@ -60,7 +53,7 @@ class MovieListViewModel @Inject constructor(
         if (currentPage <= lastPage!! && remoteDataSourceIsAvailable) {
             viewModelScope.launch {
                 viewState.value = ViewState.Loaded(data = currentMovies, loadingMore = true)
-               delay(500)
+               delay(400)
                 currentPage += 1
                 getMoviesByPageUseCase.run(GetMoviesByPageUseCase.Params(currentPage))
                     .either(
