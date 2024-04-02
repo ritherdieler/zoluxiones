@@ -16,18 +16,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.zoluxiones.features.destinations.MovieListUIDestination
+import androidx.navigation.NavHostController
+import com.zoluxiones.features.navigation.Routes
 import com.zoluxiones.theme.MyTheme
 
-@Destination(start = true)
 @Composable
-fun LoginUI(navigator: DestinationsNavigator) {
+fun LoginUI(navHostController: NavHostController) {
     Scaffold(
         topBar = { TopAppBar(title = { Text("Iniciar Sesion") }) }
-
-    ) {
+    ) { padding->
         Column(
             modifier = Modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
@@ -44,7 +41,6 @@ fun LoginUI(navigator: DestinationsNavigator) {
                     .padding(15.dp)
                     .fillMaxWidth()
             )
-
 
             val passwordTxt = rememberSaveable { mutableStateOf("") }
             TextField(
@@ -64,7 +60,7 @@ fun LoginUI(navigator: DestinationsNavigator) {
                 .fillMaxWidth(),
                 onClick = {
                     navigateToMoviesList(
-                        navigator,
+                        navHostController,
                         usernameTxt.value.trim(),
                         passwordTxt.value.trim(),
                         mContext
@@ -77,14 +73,14 @@ fun LoginUI(navigator: DestinationsNavigator) {
 }
 
 fun navigateToMoviesList(
-    navigator: DestinationsNavigator,
+    navHostController: NavHostController,
     username: String,
     password: String,
     mContext: Context,
 ) {
 
     if (username == "Admin" && password == "Password*123")
-        navigator.navigate(MovieListUIDestination)
+        navHostController.navigate(Routes.Main.MovieList.route)
     else
         Toast.makeText(mContext, "Usuario o contraseña no validos", Toast.LENGTH_SHORT).show()
 }

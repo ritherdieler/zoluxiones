@@ -1,6 +1,5 @@
 package com.zoluxiones.features.movieList
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,34 +7,25 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import androidx.navigation.NavHostController
 import com.zoluxiones.domain.entity.Movie
-import com.zoluxiones.features.destinations.MovieDetailDestination
-
-/**
- * Created by Sergio Carrillo Diestra on 22/04/2022.
- * scarrillo.peruapps@gmail.com
- * Peru Apps
- * Huacho, Peru.
- *
- **/
+import com.zoluxiones.features.navigation.Routes
+import com.zoluxiones.features.navigation.toUi
 
 
-@Destination
 @Composable
-fun MovieListUI(navigator: DestinationsNavigator, viewModel: MovieListViewModel = hiltViewModel()) {
+fun MovieListUI(
+    navHostController: NavHostController,
+    viewModel: MovieListViewModel = hiltViewModel()
+) {
 
     val viewState = viewModel.viewState
 
@@ -45,19 +35,20 @@ fun MovieListUI(navigator: DestinationsNavigator, viewModel: MovieListViewModel 
         topBar = {
             TopAppBar(title = { Text("Lista de peliculas") })
         })
-    {
+    { padding ->
         ContentComposable(
             viewState.value,
             onLoadMore = { paginateMovies(viewModel) },
             onItemClicked = {
-                navigateToMovieDetail(navigator, it)
+                navigateToMovieDetail(navHostController, it)
             })
     }
 
 }
 
-fun navigateToMovieDetail(navigator: DestinationsNavigator, movie: Movie) {
-    navigator.navigate(MovieDetailDestination(movie))
+fun navigateToMovieDetail(navHostController: NavHostController, movie: Movie) {
+    navHostController.navigate(Routes.Main.MovieDetail.createRoute(movie.toUi()))
+
 }
 
 fun paginateMovies(viewModel: MovieListViewModel) {
@@ -86,10 +77,16 @@ fun ContentComposable(
             }
 
         }
+
         is ViewState.Loaded -> {
             LoadedComposable(state, onLoadMore, onItemClicked)
         }
+
         ViewState.Loading -> {
+            Text("Initial Loading")
+        }
+
+        null -> {
             Text("Initial Loading")
         }
     }
